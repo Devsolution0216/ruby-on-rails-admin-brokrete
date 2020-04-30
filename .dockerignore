@@ -1,0 +1,6 @@
+tmp
+!/tmp/.keep
+log
+.git
+.env
+.env.template

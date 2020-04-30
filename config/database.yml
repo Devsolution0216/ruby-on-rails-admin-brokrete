@@ -1,0 +1,28 @@
+defaults: &defaults
+  adapter: postgresql
+  host: <%= ENV['POSTGRES_HOST'] || 'localhost' %>
+  port: 5432
+  username: <%= ENV['POSTGRES_USER'] || 'postgres' %>
+  password: <%= ENV['POSTGRES_PASSWORD'] || 'postgres' %>
+  database: <%= ENV['POSTGRES_DATABASE'] || 'brokrete_development' %>
+  schema_search_path: public
+  pool: <%= ENV["POSTGRES_CONNECTION_POOL"] || 5 %>
+
+development:
+  <<: *defaults
+
+production:
+  adapter: postgresql
+  pool: <%= ENV["RAILS_MAX_THREADS"] || 5 %>
+  #  reaping_frequency: 10 # can break connections for long running queries, lead to migrations fails
+  checkout_timeout: 5 # sec  number of seconds to block and wait for a connection before giving up
+  # and raising a timeout error (default 5 seconds).
+
+  prepared_statements: false
+  connect_timeout: 5 # sec  see https://www.postgresql.org/docs/9.6/libpq-connect.html
+  variables:
+    statement_timeout: <%= ENV['STATEMENT_TIMEOUT'] || 10000 %> # 10000 msec = 10 sec
+
+test:
+  <<: *defaults
+  database: <%= ENV['POSTGRES_DATABASE_TEST'] || 'brokrete_test' %>
